@@ -35,7 +35,7 @@ def get_statement(one_time_token, signature):
         'intervalEnd': interval_end})
 
     url = (
-        base_url + '/v3/profiles/' + profile_id + '/balance-statements/' 
+        base_url + '/v1/profiles/' + profile_id + '/balance-statements/' 
         + balance_id + '/statement.json?' + params)
 
     headers = {
@@ -55,8 +55,8 @@ def get_statement(one_time_token, signature):
     
     if r.status == 200 or r.status == 201:
         return json.loads(r.data)
-    elif r.status == 403 and r.getheader('x-2fa-approval') is not None:
-        one_time_token = r.getheader('x-2fa-approval')
+    elif r.status == 403 and r.headers.get('x-2fa-approval') is not None:
+        one_time_token = r.headers.get('x-2fa-approval')
         signature = do_sca_challenge(one_time_token)
         get_statement(one_time_token, signature)
     else:
