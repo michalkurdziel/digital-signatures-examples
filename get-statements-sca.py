@@ -7,15 +7,15 @@ import urllib3
 from urllib.parse import urlencode
 from datetime import datetime, timedelta, timezone
 
-private_key_path = './private.pem'  # Change to private key path
-profile_id = ''                     # Change to profile ID
-account_id = ''                     # Change to borderless account ID
+private_key_path = '/Users/michal/.ssh/wise.pem'  # Change to private key path
+profile_id = '26471881'                     # Change to profile ID
+balance_id = '26471881'                     # Change to borderless account ID
 base_url = 'https://api.transferwise.com'
 
 if os.getenv('API_TOKEN') is None:
     print('panic: no api token, please set with $ export API_TOKEN=xxx')
     sys.exit(0)
-elif profile_id == '' or account_id == '':
+elif profile_id == '' or balance_id == '':
     print('panic: profile / account ID missing, please add them')
     sys.exit(0)
 elif os.path.exists(private_key_path) is False:
@@ -35,8 +35,8 @@ def get_statement(one_time_token, signature):
         'intervalEnd': interval_end})
 
     url = (
-        base_url + '/v3/profiles/' + profile_id + '/borderless-accounts/' 
-        + account_id + '/statement.json?' + params)
+        base_url + '/v3/profiles/' + profile_id + '/balance-statements/' 
+        + balance_id + '/statement.json?' + params)
 
     headers = {
         'Authorization': 'Bearer ' + token,
