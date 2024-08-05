@@ -35,6 +35,7 @@ def get_statement(one_time_token, signature):
         'intervalStart': interval_start,
         'intervalEnd': interval_end})
 
+
     url = (
         base_url + '/v1/profiles/' + profile_id + '/balance-statements/' 
         + balance_id + '/statement.'+format+'?' + params)
@@ -96,24 +97,10 @@ def main():
 
     print(r.headers.get('Content-Type'))
 
-    # if content_type is 'application/json' and r.data is not None and 'currency' in r.data['request']:
-    #     currency = r.data['request']['currency']
-    # elif content_type in ['application/pdf']:
-    #     with open('wise.pdf', 'wb') as f:
-    #         f.write(r.data)
-    # else:
-    #     print('something is wrong')
-    #     print(r.data)
-    #     sys.exit(0)
+
     with open('wise-statement-'+interval_start[:10]+'-'+interval_end[:10]+'.'+ format, 'wb') as f:
         f.write(r.data)   
-    # if 'transactions' in r.data:
-    #     txns = len(r.data['transactions'])
-    # else:
-    #     print('Empty statement')
-    #     sys.exit(0)
 
-    # print('\n', currency, 'statement received with', txns, 'transactions.')
 
 if __name__ == '__main__':
     main()
